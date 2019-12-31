@@ -2,3 +2,4 @@
 - Source: https://www.braveclojure.com/getting-started/
 
 ###### [Chapter 1: Leiningen](Notes/Chapter_01.md)
+###### [Chapter 2: Emacs](Notes/Chapter_02.md)
