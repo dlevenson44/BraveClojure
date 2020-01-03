@@ -45,7 +45,7 @@ To configure Emacs for Clojure, first install Emacs on OS, run to make sure it's
 - `c-/` to undo a
 - `c-a` to move to start of line
 - `c-e` to move to end of line
-- `M-m` move to first non0whitespace character on line
+- `M-m` move to first non-whitespace character on line
 - `c-f` to move forward a character, `c-b` to move back
 - `m-f` and `m-b` to move forward/back a word at a time
 - `c-s` to search for word going forward, `c-r` to search in reverse
