@@ -211,3 +211,92 @@
   (println (str "Treasure lat: " lat))
   (println (str "Treasure lng: " lng)))
 ```
+
+###### Function Body
+- Body can contain forms of any time-- Clojure returns the last form evaluated
+- So in below example, `"joe"` would be returned when the function is called since it is the last form evaluated
+```
+(defn illustrative-function
+  []
+  (+ 1 304)
+  30
+  "joe")
+(illustrative-function) ; => "joe"
+
+(defn number)
+```
+- Below example shows first value being returned in a conditional
+```
+(defn number-comment
+  [x]
+  (if (> x 6)
+    "Oh wow, that number is larger than 6!"
+    "That number is smaller than 6!"))
+; Returns first condition "Oh wow, that number is larger than 6!"
+(number-comment 7)
+
+; Returns second condition "That number is smaller than 6!"
+(number-comment 5)
+```
+- Clojure has no priviliged functions, which means Clojure functions such as `+`  or `>` should be treated the same as functions that YOU define
+- All Clojure cares about is applying functions
+
+###### Anonymous Functions
+- Clojure functions don't need to have names-- anonymous functions are used all the time
+- Can create anonymous functions in two ways, the first being with `fn`
+```
+; general structure
+(fn [param-list]
+  function body)
+
+(map (fn [name] (str "Hi, " name))
+     ["Darth Vader" "Mr. Magoo"])
+; => ("Hi, Darth Vader" "Hi, Mr. Magoo")
+
+((fn [x] (* x 3)) 8)
+; =>  24
+```
+- The second way an anonymous function can be created is using the syntax below
+- In "blarg" example, `%&` is passed as a rest parameter
+-- In this case, applied the identity function to the rest argument
+-- ID returns the argument given without altering it
+-- Rest arguments are stored as lists, so that is what is returned
+-- Using this style is best if you need to write a simple anonymous function because it's visually compact
+-- If you have longer more complex functions, you want to use `fn` instead
+```
+; % sign represents argument
+#(* % 3)
+
+; %1 and %2 can be used for multiple arguments
+(#(str %1 " and " %2 " are your two arguments.") "cornbread" "grits")
+; => "cornbread and grits are your two arguments."
+
+; Can pass a rest parameter with %&
+(#(identity %&) 1 "blarg" :yip)
+; => (1 "blarg" :yip)
+
+; Below example applies the function
+(#(* % 3) 9)
+; => 27
+
+; Below is the map anonymous function above rewritten
+(map #(str "Hi, " %)
+     ["Darth Vader" "Mr. Magoo"])
+; => ("Hi, Darth Vader" "Hi, Mr. Magoo")
+```
+- When a function returns other functions, the returned functions are called closures
+- Closures: can access all variables that were in scope when the function was created
+- In below example, `inc-by` is in scope so the returned function has access to it even when returned function is used outside `inc-maker`
+```
+(defn inc-maker
+  "Create a custom incrementor"
+  [inc-by]
+  #(+ % inc-by))
+(def inc3 (inc-maker 3))
+(inc3 7)
+; => 10
+(inc3 14)
+; => 17
+```
+
+

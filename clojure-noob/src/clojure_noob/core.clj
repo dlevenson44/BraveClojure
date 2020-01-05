@@ -132,3 +132,66 @@
   (println (str "Treasure lat: " lat))
   (println (str "Treasure lng: " lng)))
 (announce-treasure-location {:lat 33.22 :lng 22.11})
+
+(defn number-comment
+  [x]
+  (if (> x 6)
+    "Oh wow, that number is larger than 6!"
+    "That number is smaller than 6!"))
+; Returns first condition "Oh wow, that number is larger than 6!"
+(number-comment 7)
+
+; Returns second condition "That number is smaller than 6!"
+(number-comment 5)
+
+(map (fn [name] (str "Hi, " name))
+     ["Darth Vader" "Mr. Magoo"])
+; => ("Hi, Darth Vader" "Hi, Mr. Magoo")
+
+((fn [x] (* x 3)) 8)
+; =>  24
+
+(#(* % 3) 9)
+
+(map #(str "Hi, " %)
+     ["Darth Vader" "Mr. Magoo"])
+
+(#(str %1 " and " %2 " are your two arguments.") "cornbread" "grits")
+
+(#(identity %&) 1 "blarg" :yip)
+
+(defn inc-maker
+  "Create a custom incrementor"
+  [inc-by]
+  #(+ % inc-by))
+(def inc3 (inc-maker 3))
+(inc3 7)
+; => 10
+(inc3 14)
+; => 17
+
+(let [x 3]
+  x)
+; => 3
+
+(def dalmation-list
+  ["Pongo" "Perdita" "Puppy 1" "Puppy 2"])
+(let [dalmations (take 2 dalmation-list)]
+  dalmations)
+; => ("Pongo" "Perdita")
+
+(loop [iteration 0]
+  (println (str "Iteration " iteration))
+  (if (> iteration 3)
+    (println "Goodbye!")
+    (recur (inc iteration))))
+
+(defn recursive-printer
+  ([]
+   (recursive-printer 0))
+  ([iteration]
+   (println iteration)
+   (if (> iteration 3)
+     (println "Goodbye!")
+     (recursive-printer (inc iteration)))))
+(recursive-printer)
