@@ -1,5 +1,5 @@
 
-###### Chapter 1: Leiningen
+### Chapter 1: Leiningen
 - Leiningen is used to build and manage projects... next steps will walk through creating, running, building Clojure project, as well as using REPL
 1. Run `lein new app clojure-noob` to generate the project!
 - project.clj is a config file that tells Leiningen what dependencies the project has, when functions should run

@@ -1,4 +1,4 @@
-##### Chapter 2: Emacs
+### Chapter 2: Emacs
 - Recommended due to tight integration with Clojure REPL, lets you immediately test out code as you write it
 - This is useful while learning and writing programs
 - Emacs is great for any Lisp dialect and is designed for it

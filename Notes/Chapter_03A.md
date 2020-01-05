@@ -1,4 +1,4 @@
-##### Clojure Crash Course
+### Clojure Crash Course
 - Clojure is written in a uniform structure that recognizes two kinds of structures
 1. Operations
 2. Literal representations (ie numbers, strings, maps, and vectors)
@@ -275,3 +275,13 @@ failed-protagonist-names
 ; => true
 ```
 
+##### Destructuring
+- Let's you concisely bind names to values within a collection
+- Below example returns the first element of a collection that is passed to it
+```
+(defn my-first
+  [[first-thing]]
+  first-thing)
+(my-first ["oven" "bik" "war-axe"])
+=> "oven"
+```
