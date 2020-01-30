@@ -154,3 +154,80 @@
      (recursive-printer (inc iteration)))))
 (recursive-printer)
 ```
+
+###### Focusing on symmetrize-body-parts function
+```
+(defn symmetrize-body-parts
+  "Expects a sequence of maps that have a :name and a :size"
+  [asym-body-parts]
+  (loop [remaining-asym-parts asym-body-parts
+         final-body-parts []]
+    (if (empty? remaining-asym-parts)
+      final-body-parts
+      (let [[part & remaining] remaining-asym-parts]
+        (recur remaining
+               (into final-body-parts
+                     (set [part (matching-part part)])))))))
+```
+- Function uses common strategy:
+1. Given a sequence (in this case a vector of body parts/sizes), the function continuously splits the sequence into a head and a tail
+- It processes the head, adds it to some result, and uses recursion to continue the process with the tail
+- The tail of seq will be bound to `remaining-asym-parts`
+- We begin to loop over the body parts on line 163 where we initially assign `remaining-asym-parts` the `asym-body-parts` value
+- We also create an empty vector called `final-body-parts` to store the result sequence
+- On line 165, we're checking if `remaining-asym-parts` is empty
+- If it is, that means we've processed the entire sequence and can return the result, which is `final-body-parts` on line 166
+- If `remaining-asym-parts` is NOT emptywe split the list into a head called `part` and a tail called `remaining` (line 167)
+- Lione 168, we recur `remaining`-- list that gets shorter by one element for each iteration --, and we recur the `(into)` expression-- which builds vector of symmetrized body parts
+
+- `reduce` function exists in Clojure, works the same as Javascript
+```
+(reduce + [ 1 2 3 4])
+; => 10
+; The same as telling Clojure
+(+ (+ (+ 1 2) 3) 4)
+```
+- It works according to the following rules:
+1. Apply the given function to the first two elements of a sequence-- which would be `(+ 1 2)` in our example above
+2. Apply the given function to the result and the next element of the sequence-- so after step 1, `(+ 1 2)` is `3`, so next we'd calculate `(+ 3 3)`
+3. Repeat step 2 for efvery remaining element in the sequence
+- Can set an optional initial value with reduce if desired
+```
+(reduce + 15 [1 2 3 4])
+; => 15 + 10 = 25
+```
+- Can reduce large collections as well as small ones in examples
+- `reduce` abstracts the task "process a collection and build a result".
+- Below we can rewrite the symmetrize-body-parts function to be more concise
+```
+(defn better-symmetrize-body-parts
+  "Expects a seq of maps that have a :name and :size"
+  [asym-body-parts]
+  ; anonymous function focuses on processing an element and building a result
+  (reduce (fn [final-body-parts part]
+            (into final-body-parts (set [part (matching-part part)])))
+          []
+          asym-body-parts))
+(better-symmetrize-body-parts asym-hobbit-body-parts)
+```
+- `reduce` keeps track of which elements have been processed and can decide on its own whether to return a final result or to recur
+
+- Can use below function where hit takes a vector of asymmetrical body parts
+```
+(defn hit
+  [asym-body-parts]
+  (let [sym-parts (better-symmetrize-body-parts asym-body-parts)
+        body-part-size-sum (reduce + (map :size sym-parts))
+        target (rand body-part-size-sum)]
+    (loop [[part & remaining] sym-parts
+           accumulated-size (:size part)]
+      (if (> accumulated-size target)
+        part
+        (recur remaining (+ accumulated-size (:size (first remaining))))))))
+(hit asym-hobbit-body-parts)
+```
+- We symmetrize the body parts on line 219 where we call the `better-symmetrize-body-parts` function and we pass it the `asym-body-parts` vector argument the function receives
+- We sum the sizes on line 220 where we call `body-part-size-sum`
+-- Once we size the sum, each number from 1 through the body part size sum will correspond to a body part-- 1 might be a left-eye since its size is 1, head might be 2, 3, and 4 since its size is 3, etc
+-- We assign `body-part-size-sum` the result of `(reduce + (map :size sym-parts)`), wwhich calls the map function on the :size of the sym-parts
+-- Remember that we bound sym-parts on line 219!

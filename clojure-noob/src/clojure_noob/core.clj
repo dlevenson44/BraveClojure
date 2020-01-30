@@ -195,3 +195,6 @@
      (println "Goodbye!")
      (recursive-printer (inc iteration)))))
 (recursive-printer)
+
+(reduce + 15 [1 2 3 4])
+; => 15 + 10 = 25
